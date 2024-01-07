@@ -1,3 +1,4 @@
+const { name } = require("ejs");
 const fs = require("fs");
 const path = require("path");
 
@@ -60,17 +61,43 @@ const controller = {
 	const product = products.find((product) => product.id === +req.params.id);
 	return res.render('product-edit-form',{
 		...product
+    
 	})
 
   },
   // Update - Method to update
   update: (req, res) => {
-    // Do the magic
+    const { name, price, discount, description, category } = req.body;
+    
+    const productUpdated = products.map(product => {
+      if(product.id === +req.params.id){
+   
+      product.name= name.trim(), //.trim() se usa para que no quede espacio a los lados.
+      product.price= +price,
+      product.discount= +discount,
+      product.category= category,
+      product.description= description.trim()
+      }
+    return product
+})
+    fs.writeFileSync(productsFilePath,JSON.stringify(productUpdated),"utf-8")  //strignificar el producto nuevo para q lo acepte el json
+
+    return res.redirect('/products/detail/' + req.params.id);
+  //  return res.send(req.body)
   },
 
   // Delete - Delete one product from DB
-  destroy: (req, res) => {
+ destroy: (req, res) => {
     // Do the magic
+    const {id} = req.params;
+    // return res.send(id)
+
+    const productoFiltrado = products.filter(producto => producto.id != id )
+
+    fs.writeFileSync(productsFilePath,JSON.stringify(productoFiltrado),"utf-8")
+
+
+    return res.redirect('/products')
   },
 };
 

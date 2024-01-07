@@ -35,9 +35,7 @@
 								<% if (discount) { %>
 
 									<p class="product-detail-price small">
-										<span>$
-											<%= toThousand(price) %>
-										</span>
+										<span>$<%= toThousand(price) %></span>
 
 									</p>
 									<b>
@@ -70,10 +68,14 @@
 
 											<a href="/products/edit/<%= id %>" class="action-button edit">EDITAR
 												PRODUCTO</a>
-											<form action="/products/delete/<%= id %>" method="POST"
+											<form action="/products/eliminar/<%= id %>?_method=DELETE" method="POST"
 												style="display: inline-flex">
-												<button type="submit" class="action-button delete">ELIMINAR</button>
+												<button type="button" class="action-button delete"
+													onclick="if(confirm('¿Estás seguro de que deseas eliminar este producto?')){this.form.submit();}">
+													ELIMINAR
+												</button>
 											</form>
+
 							</article>
 						</div>
 					</div>
