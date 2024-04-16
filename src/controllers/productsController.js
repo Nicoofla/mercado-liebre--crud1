@@ -65,26 +65,26 @@ const controller = {
 	})
 
   },
-  // Update - Method to update
-  update: (req, res) => {
-    const { name, price, discount, description, category } = req.body;
-    
-    const productUpdated = products.map(product => {
-      if(product.id === +req.params.id){
-   
-      product.name= name.trim(), //.trim() se usa para que no quede espacio a los lados.
-      product.price= +price,
-      product.discount= +discount,
-      product.category= category,
-      product.description= description.trim()
-      }
-    return product
-})
-    fs.writeFileSync(productsFilePath,JSON.stringify(productUpdated),"utf-8")  //strignificar el producto nuevo para q lo acepte el json
+// Update - Method to update
+update: (req, res) => {
+  const { name, price, discount, description, category } = req.body;
+  
+  products.forEach(product => {
+    if(product.id === +req.params.id){
+      product.name = name.trim();
+      product.price = +price;
+      product.discount = +discount;
+      product.category = category;
+      product.description = description.trim();
+    }
+  });
 
-    return res.redirect('/products/detail/' + req.params.id);
-  //  return res.send(req.body)
-  },
+  fs.writeFileSync(productsFilePath, JSON.stringify(products), "utf-8");
+
+  return res.redirect('/products/detail/' + req.params.id);
+},
+
+
 
   // Delete - Delete one product from DB
  destroy: (req, res) => {
